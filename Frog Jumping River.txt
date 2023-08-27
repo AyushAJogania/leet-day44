@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+
+bool canCross(std::vector<int>& stones) {
+    std::unordered_set<int> reachable;
+    reachable.insert(0);
+    
+    for (int i = 1; i < stones.size(); ++i) {
+        reachable.insert(stones[i]);
+    }
+    
+    for (int i = 1; i < stones.size(); ++i) {
+        for (int prev : reachable) {
+            int diff = stones[i] - prev;
+            if (reachable.count(diff - 1) || reachable.count(diff) || reachable.count(diff + 1)) {
+                reachable.insert(stones[i]);
+                break;
+            }
+        }
+    }
+    
+    return reachable.count(stones.back());
+}
